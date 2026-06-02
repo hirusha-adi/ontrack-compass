@@ -1,0 +1,20 @@
+{
+  "name": "ontrack-compass-extension",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./dashboard/input.css -o ./dashboard/styles.css --minify",
+    "build:icons": "node scripts/generate-icons.mjs",
+    "build:vendor": "node scripts/vendor-charts.mjs",
+    "build": "npm run build:vendor && npm run build:css && npm run build:icons"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.9",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-plugin-annotation": "^3.1.0"
+  },
+  "devDependencies": {
+    "daisyui": "^5.0.0",
+    "pngjs": "^7.0.0",
+    "tailwindcss": "^3.4.17"
+  }
+}

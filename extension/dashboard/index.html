@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="compass">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OnTrack Compass</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="page-bg">
+    <header class="mat-app-bar">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <div class="flex items-center gap-3">
+          <div
+            class="flex h-9 w-9 items-center justify-center rounded bg-md-primary text-white"
+            aria-hidden="true"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 3v18M3 12h18" stroke-linecap="round" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-medium leading-tight text-md-text-primary">OnTrack Compass</h1>
+            <p class="text-xs text-md-text-secondary">Study dashboard</p>
+          </div>
+        </div>
+        <button id="btn-refresh" class="btn-text" type="button">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08a5.99 5.99 0 0 1-5.65 4c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+          </svg>
+          Refresh
+        </button>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 pb-8 pt-5 sm:px-6 space-y-5">
+      <div id="alert-area"></div>
+
+      <!-- Controls -->
+      <section class="mat-card p-5 sm:p-6 space-y-5">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div class="mat-tabs" role="tablist">
+            <button type="button" id="mode-unit" class="mat-tab mat-tab--active" data-mode="unit" role="tab">
+              Single unit
+            </button>
+            <button type="button" id="mode-all" class="mat-tab" data-mode="all" role="tab">
+              All enrolled
+            </button>
+          </div>
+          <p id="enrolled-hint" class="text-sm text-md-text-secondary hidden"></p>
+        </div>
+
+        <div id="unit-picker-wrap" class="space-y-3">
+          <label class="block">
+            <span class="section-title mb-1 block">Unit</span>
+            <select id="project-select" class="mat-select">
+              <option value="">Loading…</option>
+            </select>
+          </label>
+          <div id="unit-summary" class="hidden space-y-1 border-t border-md-divider pt-4"></div>
+        </div>
+
+        <div id="enrolled-units-wrap" class="hidden border-t border-md-divider pt-4">
+          <p class="section-title mb-2">Currently enrolled</p>
+          <div id="enrolled-units-chips" class="flex flex-wrap gap-2"></div>
+        </div>
+      </section>
+
+      <section id="unit-breakdown-section" class="hidden space-y-3">
+        <h2 class="page-heading text-base">By unit</h2>
+        <div id="unit-breakdown" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"></div>
+      </section>
+
+      <!-- Main workspace: task list | stats + details -->
+      <div class="dashboard-workspace">
+        <!-- Left: task list -->
+        <section class="task-list-panel mat-card" aria-label="Task list">
+          <div class="task-list-panel__header">
+            <div>
+              <h2 class="page-heading text-base">Task list</h2>
+              <p id="tasks-subtitle" class="page-subheading text-xs">Sorted by due date</p>
+            </div>
+            <label class="flex shrink-0 cursor-pointer items-center gap-2 text-xs text-md-text-secondary">
+              <input id="show-completed" type="checkbox" class="checkbox checkbox-primary checkbox-sm rounded-sm" />
+              Completed
+            </label>
+          </div>
+          <div id="tasks-list" class="task-list-scroll">
+            <div class="empty-state m-3">
+              <p class="text-sm text-md-text-secondary">Choose a unit above to see your tasks</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: stats + task details -->
+        <div class="dashboard-right">
+          <div id="stats-row" class="hidden stats-row">
+            <div class="mat-stat">
+              <p class="section-title">Total tasks</p>
+              <p id="stat-total-count" class="mat-stat__value">0</p>
+            </div>
+            <div class="mat-stat">
+              <p class="section-title">Open</p>
+              <p id="stat-incomplete-count" class="mat-stat__value text-md-primary">0</p>
+            </div>
+            <div class="mat-stat">
+              <p class="section-title">Hours left</p>
+              <p id="stat-hours-remaining" class="mat-stat__value">0</p>
+            </div>
+          </div>
+          <p id="stats-meta" class="hidden text-xs text-md-text-secondary -mt-2"></p>
+
+          <!-- Hidden: still updated by JS for stats-meta -->
+          <span id="stat-complete-count" class="hidden">0</span>
+          <span id="stat-hours-total" class="hidden">0</span>
+          <span id="stat-units-count" class="hidden">0</span>
+
+          <section id="task-detail-section" class="task-detail-panel mat-card min-h-0">
+            <div class="task-detail-panel__header">
+              <h2 class="page-heading text-base">Task details</h2>
+            </div>
+            <div id="task-detail" class="task-detail-body">
+              <div id="task-detail-empty" class="flex h-full min-h-[240px] items-center justify-center p-6 text-center">
+                <p class="text-sm text-md-text-secondary">Select a task from the list</p>
+              </div>
+              <div id="task-detail-content" class="hidden space-y-4 p-5"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Footer utilities -->
+      <div class="dashboard-footer grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div class="mat-card p-5">
+          <h2 class="font-medium text-md-text-primary">My todos</h2>
+          <p class="text-xs text-md-text-secondary mt-0.5 mb-3">Saved locally on this device</p>
+          <form id="todo-form" class="flex gap-2">
+            <input
+              id="todo-input"
+              type="text"
+              class="mat-input flex-1"
+              placeholder="Add a todo"
+              maxlength="500"
+              autocomplete="off"
+            />
+            <button class="btn-contained shrink-0 normal-case" type="submit">Add</button>
+          </form>
+          <ul id="todo-list" class="mt-3 max-h-48 overflow-y-auto"></ul>
+          <p id="todo-empty" class="hidden mt-4 text-center text-sm text-md-text-secondary">No todos yet.</p>
+        </div>
+
+        <div class="mat-card-outlined p-5">
+          <p class="section-title mb-3">Time estimates</p>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <div class="estimate-row">
+              <span class="grade-pill grade-pill--P">P</span>
+              <span class="tabular-nums text-md-text-secondary">1.5 h</span>
+            </div>
+            <div class="estimate-row">
+              <span class="grade-pill grade-pill--C">C</span>
+              <span class="tabular-nums text-md-text-secondary">2.5 h</span>
+            </div>
+            <div class="estimate-row">
+              <span class="grade-pill grade-pill--D">D</span>
+              <span class="tabular-nums text-md-text-secondary">5 h</span>
+            </div>
+            <div class="estimate-row">
+              <span class="grade-pill grade-pill--HD">HD</span>
+              <span class="tabular-nums text-md-text-secondary">12 h</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mat-card-outlined p-5">
+          <p class="section-title mb-3">Task statuses</p>
+          <ul id="status-legend" class="grid grid-cols-1 gap-2 text-xs sm:grid-cols-2"></ul>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <section class="dashboard-charts grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div class="mat-card p-5">
+          <h2 class="page-heading text-base mb-1">Status breakdown</h2>
+          <p class="page-subheading text-xs mb-4">Tasks by OnTrack status</p>
+          <div id="chart-pie"></div>
+        </div>
+        <div class="mat-card p-5">
+          <h2 class="page-heading text-base mb-1">Progress</h2>
+          <p class="page-subheading text-xs mb-4">Completion so far</p>
+          <div id="chart-bars"></div>
+        </div>
+      </section>
+
+      <!-- Timeline line chart -->
+      <section class="mat-card p-5 sm:p-6 chart-line-section">
+        <h2 class="page-heading text-base mb-1">Progress timeline</h2>
+        <p class="page-subheading text-xs mb-4">Hover for task names · purple dots = submission dates</p>
+        <div id="chart-line"></div>
+      </section>
+    </main>
+
+    <script src="../vendor/chart.umd.min.js"></script>
+    <script src="../vendor/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="../vendor/chartjs-plugin-annotation.min.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

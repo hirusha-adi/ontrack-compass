@@ -1,0 +1,289 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased scroll-smooth;
+  }
+
+  body {
+    @apply font-sans text-md-text-primary bg-md-background;
+  }
+
+  ::selection {
+    background-color: rgba(25, 118, 210, 0.2);
+  }
+}
+
+@layer components {
+  .page-bg {
+    @apply min-h-screen bg-md-background;
+  }
+
+  .mat-app-bar {
+    @apply sticky top-0 z-50 bg-md-surface shadow-elevation-appbar;
+  }
+
+  .mat-card {
+    @apply rounded bg-md-surface shadow-elevation-1;
+  }
+
+  .mat-card-outlined {
+    @apply rounded border border-md-divider bg-md-surface;
+  }
+
+  .section-title {
+    @apply text-xs font-medium uppercase tracking-wide text-md-text-secondary;
+  }
+
+  .page-heading {
+    @apply text-xl font-medium text-md-text-primary;
+  }
+
+  .page-subheading {
+    @apply text-sm text-md-text-secondary;
+  }
+
+  .btn-contained {
+    @apply inline-flex items-center justify-center rounded px-4 py-2 text-sm font-medium uppercase tracking-wide text-white transition-colors;
+    background-color: #1976d2;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.14);
+  }
+
+  .btn-contained:hover {
+    background-color: #1565c0;
+  }
+
+  .btn-text {
+    @apply inline-flex items-center gap-2 rounded px-3 py-2 text-sm font-medium uppercase tracking-wide text-md-primary transition-colors;
+  }
+
+  .btn-text:hover {
+    background-color: rgba(25, 118, 210, 0.08);
+  }
+
+  .mat-select {
+    @apply w-full rounded border border-md-divider bg-md-surface px-3 py-2.5 text-sm text-md-text-primary;
+  }
+
+  .mat-select:focus {
+    @apply border-md-primary outline-none ring-1 ring-md-primary;
+  }
+
+  .mat-input {
+    @apply w-full rounded border border-md-divider bg-md-surface px-3 py-2 text-sm text-md-text-primary;
+  }
+
+  .mat-input::placeholder {
+    color: rgba(0, 0, 0, 0.38);
+  }
+
+  .mat-input:focus {
+    @apply border-md-primary outline-none ring-1 ring-md-primary;
+  }
+
+  .mat-tabs {
+    @apply inline-flex border-b border-md-divider;
+  }
+
+  .mat-tab {
+    @apply relative px-4 py-3 text-sm font-medium uppercase tracking-wide text-md-text-secondary transition-colors;
+  }
+
+  .mat-tab:hover {
+    @apply text-md-text-primary;
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .mat-tab--active {
+    @apply text-md-primary;
+  }
+
+  .mat-tab--active::after {
+    content: "";
+    @apply absolute bottom-0 left-0 right-0 h-0.5 bg-md-primary;
+  }
+
+  .mat-stat {
+    @apply rounded bg-md-surface p-4 shadow-elevation-1;
+  }
+
+  .mat-stat__value {
+    @apply mt-1 text-2xl font-medium tabular-nums text-md-text-primary;
+  }
+
+  .mat-chip {
+    @apply inline-flex items-center rounded-full border border-md-divider bg-md-surface px-3 py-1 text-xs font-medium text-md-text-primary;
+  }
+
+  .mat-chip--primary {
+    @apply border-transparent text-white;
+    background-color: #1976d2;
+  }
+
+  .task-list {
+    @apply mat-card divide-y divide-md-divider overflow-hidden;
+  }
+
+  .task-card {
+    @apply relative cursor-pointer bg-md-surface transition-colors;
+  }
+
+  .task-card:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .task-card--selected {
+    background-color: rgba(25, 118, 210, 0.08);
+  }
+
+  .task-card__accent {
+    @apply absolute left-0 top-0 h-full w-1;
+  }
+
+  .grade-pill {
+    @apply inline-flex min-w-[2rem] items-center justify-center rounded px-1.5 py-0.5 font-mono text-xs font-medium;
+  }
+
+  .grade-pill--P {
+    @apply bg-green-50 text-green-800 ring-1 ring-green-200;
+  }
+
+  .grade-pill--C {
+    @apply bg-blue-50 text-blue-800 ring-1 ring-blue-200;
+  }
+
+  .grade-pill--D {
+    @apply bg-purple-50 text-purple-800 ring-1 ring-purple-200;
+  }
+
+  .grade-pill--HD {
+    @apply bg-amber-50 text-amber-900 ring-1 ring-amber-200;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center gap-1.5 text-xs font-medium;
+  }
+
+  .status-dot {
+    @apply inline-block h-2 w-2 rounded-full;
+  }
+
+  .todo-item {
+    @apply flex items-start gap-3 border-b border-md-divider px-1 py-3 last:border-b-0;
+  }
+
+  .empty-state {
+    @apply flex flex-col items-center justify-center rounded border border-dashed border-md-divider bg-md-surface px-6 py-12 text-center;
+  }
+
+  .skeleton {
+    @apply h-20 animate-pulse rounded bg-gray-200;
+  }
+
+  .detail-dl dt {
+    @apply text-xs font-medium uppercase tracking-wide text-md-text-secondary;
+  }
+
+  .detail-dl dd {
+    @apply mt-0.5 text-sm text-md-text-primary;
+  }
+
+  .unit-stat-card {
+    @apply rounded bg-md-surface p-4 shadow-elevation-1;
+  }
+
+  .alert-banner {
+    @apply flex items-start gap-3 rounded border px-4 py-3 text-sm;
+  }
+
+  .alert-banner--warning {
+    @apply border-amber-200 bg-amber-50 text-amber-900;
+  }
+
+  .alert-banner--error {
+    @apply border-red-200 bg-red-50 text-red-900;
+  }
+
+  .alert-banner--success {
+    @apply border-green-200 bg-green-50 text-green-900;
+  }
+
+  .alert-banner--info {
+    @apply border-blue-200 bg-blue-50 text-blue-900;
+  }
+
+  .status-legend-item {
+    @apply flex items-center gap-2 text-md-text-primary;
+  }
+
+  .estimate-row {
+    @apply flex items-center justify-between rounded border border-md-divider bg-md-background px-3 py-2 text-sm;
+  }
+
+  .dashboard-workspace {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    min-height: min(720px, calc(100vh - 15rem));
+    align-items: stretch;
+  }
+
+  @media (min-width: 1024px) {
+    .dashboard-workspace {
+      grid-template-columns: minmax(300px, 380px) 1fr;
+    }
+  }
+
+  .task-list-panel {
+    @apply flex min-h-0 flex-col overflow-hidden;
+    max-height: min(720px, calc(100vh - 15rem));
+  }
+
+  .task-list-panel__header {
+    @apply flex shrink-0 items-start justify-between gap-3 border-b border-md-divider px-4 py-3;
+  }
+
+  .task-list-scroll {
+    @apply min-h-0 flex-1 overflow-y-auto;
+  }
+
+  .task-list-scroll .task-list {
+    @apply rounded-none shadow-none;
+  }
+
+  .dashboard-right {
+    @apply flex min-h-0 flex-col gap-3;
+    min-height: min(720px, calc(100vh - 15rem));
+  }
+
+  .stats-row {
+    @apply grid shrink-0 grid-cols-3 gap-3;
+  }
+
+  .task-detail-panel {
+    @apply flex min-h-0 flex-1 flex-col overflow-hidden;
+  }
+
+  .task-detail-panel__header {
+    @apply shrink-0 border-b border-md-divider px-4 py-3;
+  }
+
+  .task-detail-body {
+    @apply min-h-0 flex-1 overflow-y-auto;
+  }
+
+  .chart-canvas-wrap {
+    @apply relative w-full;
+    min-height: 280px;
+  }
+
+  .chart-canvas-wrap--line {
+    min-height: 420px;
+  }
+
+  .chart-line-section {
+    @apply w-full;
+  }
+}
