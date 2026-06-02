@@ -6,7 +6,10 @@ import { PNG } from "pngjs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const iconsDir = path.join(__dirname, "..", "icons");
 
-const sizes = [16, 32, 48, 128];
+const sizes = [16, 32, 48, 128, 1080];
+
+/** Needle accent — #4040FF (replaces former teal) */
+const NEEDLE = { r: 64, g: 64, b: 255 };
 
 function drawCompass(size) {
   const png = new PNG({ width: size, height: size });
@@ -36,9 +39,9 @@ function drawCompass(size) {
           Math.abs(Math.sin(angle * 2)) > 0.85 ||
           Math.abs(Math.cos(angle * 2)) > 0.85;
         if (needle) {
-          r8 = 13;
-          g8 = 148;
-          b8 = 136;
+          r8 = NEEDLE.r;
+          g8 = NEEDLE.g;
+          b8 = NEEDLE.b;
         } else {
           r8 = 241;
           g8 = 245;
