@@ -1,5 +1,7 @@
 # OnTrack Compass
 
+<img width="2172" height="724" alt="image" src="https://github.com/user-attachments/assets/f437fc95-c927-49a7-95c5-83c209e65f11" />
+
 A **Firefox extension** that reads your [Deakin OnTrack](https://ontrack.deakin.edu.au/) data and opens a local dashboard: tasks sorted by due date, grade-based time estimates, interactive charts, and a private todo list (stored only in your browser).
 
 ## Install in Firefox (temporary — for development)
